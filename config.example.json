@@ -1,0 +1,61 @@
+{
+  "_comment": "复制本文件为 config.json 并按实际填写。所有相对路径相对 project_dir；脚本也支持命令行 --config 指定。",
+
+  "project_dir": "./work",
+  "output": "output/讲解视频.mp4",
+
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "fade": 0.5,
+    "crf": 20,
+    "preset": "medium"
+  },
+
+  "timeline": {
+    "gap": 0.9,
+    "_gap_comment": "页与页之间额外停留秒数，避免切镜过于急促",
+    "default_chinese_weight": 1.0,
+    "default_ascii_weight": 0.55
+  },
+
+  "audio": {
+    "voice_wav": "audio/voice.wav",
+    "bgm_wav": "audio/bgm.wav",
+    "bgm_volume": 0.12,
+    "bitrate": "192k"
+  },
+
+  "subtitle": {
+    "enabled": true,
+    "font": "Microsoft YaHei",
+    "font_size": 26,
+    "margin_v": 58,
+    "alignment": 2,
+    "_comment": "每页只放一条精简关键字幕（标题式），不要逐句长字幕；半透明深色底条落在画面空隙，不遮卡片正文与人物。"
+  },
+
+  "voice_segments": [
+    { "file": "audio/seg1.wav", "duration": 0 },
+    { "file": "audio/seg2.wav", "duration": 0 },
+    { "file": "audio/seg3.wav", "duration": 0 }
+  ],
+
+  "pages": [
+    {
+      "image": "shots/p1.jpg",
+      "segment": 1,
+      "voice": "本页完整口播稿（用于字数权重估算，不必与配音逐字一致）。",
+      "voice_duration": 0,
+      "subtitle": "第一页精简关键字幕"
+    },
+    {
+      "image": "shots/p2.jpg",
+      "segment": 1,
+      "voice": "第二页口播稿……",
+      "voice_duration": 0,
+      "subtitle": "第二页精简关键字幕"
+    }
+  ]
+}

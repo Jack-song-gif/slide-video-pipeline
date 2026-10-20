@@ -1,0 +1,27 @@
+# 本地配置（含具体路径与口播稿），不入库
+config.json
+
+# 工程中间产物
+work/
+output/
+segs/
+shots/
+audio/
+*.wav
+*.mp4
+*.srt
+timeline.json
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 品牌素材按需自行放入，默认不随仓库分发
+assets/*
+!assets/.gitkeep
