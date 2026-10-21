@@ -25,12 +25,25 @@ def main():
     video_dur = tl["video_dur"]
 
     sub = cfg["subtitle"]
-    style = (
-        f"FontName={sub['font']},FontSize={sub['font_size']},"
-        "PrimaryColour=&HFFFFFF,OutlineColour=&H00101A26,"
-        "BackColour=&H64101A26,BorderStyle=4,Outline=0,Shadow=0,"
-        f"MarginV={sub['margin_v']},Alignment={sub['alignment']}"
-    )
+
+    # 字幕源优先级：手工定稿的 sub.ass（自带样式，底部居中，已逐页调过 MarginV）优先；
+    # 没有 ass 才回退 make_timeline 生成的 sub.srt，并套 force_style。
+    # 注意：不要对 ass 再套 force_style，否则会覆盖 ass 里逐页调好的位置/底条。
+    ass_path = os.path.join(root, "sub.ass")
+    srt_path = os.path.join(root, "sub.srt")
+    if os.path.exists(ass_path):
+        v_subtitle = "subtitles=sub.ass"
+    elif os.path.exists(srt_path):
+        style = (
+            f"FontName={sub['font']},FontSize={sub['font_size']},"
+            "PrimaryColour=&HFFFFFF,OutlineColour=&H00101A26,"
+            "BackColour=&H64101A26,BorderStyle=4,Outline=0,Shadow=0,"
+            f"MarginV={sub['margin_v']},Alignment={sub['alignment']}"
+        )
+        v_subtitle = f"subtitles=sub.srt:force_style='{style}'"
+    else:
+        v_subtitle = None
+        raise SystemExit("缺少字幕文件：需要 sub.ass 或 sub.srt")
 
     silent = os.path.join(root, "segs", "silent.mp4")
     voice = os.path.join(root, cfg["audio"]["voice_wav"])
@@ -39,7 +52,7 @@ def main():
     os.makedirs(os.path.dirname(out), exist_ok=True)
 
     fc = (
-        f"[0:v]subtitles=sub.srt:force_style='{style}'[v];"
+        f"[0:v]{v_subtitle}[v];"
         f"[2:a]volume={cfg['audio']['bgm_volume']},atrim=0:{video_dur}[bg];"
         f"[1:a]apad[vo];"
         f"[vo][bg]amix=inputs=2:duration=longest:dropout_transition=0[a]"

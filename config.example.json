@@ -5,12 +5,13 @@
   "output": "output/讲解视频.mp4",
 
   "video": {
-    "width": 1280,
-    "height": 720,
+    "_comment": "默认输出 1920x1080 高清；crf16/preset slow 保证文字锐利，不要为了省体积回到720p或crf20。页图必须是高清源（见阶段一：用 export_highres_pages.ps1 从 pptx 矢量渲染，不要用960x540在线截图放大）。",
+    "width": 1920,
+    "height": 1080,
     "fps": 30,
     "fade": 0.5,
-    "crf": 20,
-    "preset": "medium"
+    "crf": 16,
+    "preset": "slow"
   },
 
   "timeline": {
@@ -42,6 +43,7 @@
     { "file": "audio/seg3.wav", "duration": 0 }
   ],
 
+  "_pages_comment": "每页 image 用高清页图（1920x1080 PNG/JPG），由 scripts/export_highres_pages.ps1 从导出的 pptx 矢量渲染得到；飞书 +screenshot 仅用于服务端复核，其960x540结果不要直接当视频画面源。",
   "pages": [
     {
       "image": "shots/p1.jpg",

@@ -32,7 +32,7 @@ lark-cli slides +xml-get --presentation <PID> --output ./final.xml --json
 lark-cli slides +replace-slide --presentation <PID> --slide-id <SID> \
   --parts @parts.json --json
 
-# 逐页截图（输出目录必须在当前工作目录或其下）
+# 逐页截图（仅用于服务端复核；输出固定 960x540，不能直接当视频画面源）
 lark-cli slides +screenshot --presentation <PID> --slide-id <SID> --output-dir ./shots
 ```
 
@@ -58,4 +58,11 @@ lark-cli drive +export --token <PID> --doc-type slides --file-extension pptx \
   --output-dir ./out --file-name <名称> --overwrite --json
 ```
 
-> 截图是阶段二视频的画面来源，务必导出清晰、比例统一的整页图。
+4. **视频高清画面源（关键，不要跳过）**：在线 `+screenshot` 只有 960×540，放大到 1080p 会发虚。用本机 PowerPoint COM 把导出的 pptx 矢量渲染成 1920×1080 整页图，再填进 config 的 `pages[].image`：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/export_highres_pages.ps1 `
+  -Pptx "./out/deck.pptx" -OutDir "./highres" -Width 1920 -Height 1080
+```
+
+> 脚本自动把含中文/空格的 pptx 拷成临时英文副本再 Open（规避 COM 0x8007007B），导出后清理临时文件；无 PowerPoint 的环境才退回在线截图，并接受其清晰度上限。
